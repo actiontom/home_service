@@ -2,7 +2,7 @@ express = require('express');
 
 module.exports = class Express {
 
-constructor(){ 
+constructor(){
 
 this.app = express();
 this.port =  3000;
@@ -17,6 +17,12 @@ this.app.get('/api/greet', (req, res) => {
 });
 
 this.app.get('/api/name', (req, res) => res.send('Thomas'));
+
+this.app.post('/api/data', (req, res) => {
+    
+    res.send('Thomas')}
+    );
+
 
 this.app.listen(this.port, () => console.log(`home_service app listening on port ${this.port}!`));
 

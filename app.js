@@ -9,10 +9,8 @@ server.start();
 
 let db = new Mongo();
 
-console.log(db);
-
-// db.insert();
-
-//console.log(mydb);
-
-// mydb.insertOne();
+let con = db.connect().then((res)=>{
+    console.log(res);
+    var myobj = { name: "Thomas4", surname: "Riley4" };
+    db.insertOne('test', myobj);
+});
