@@ -14,10 +14,7 @@ this.app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
-
 }
-
-
 
 start(){
 
@@ -42,10 +39,8 @@ this.app.listen(this.port, () => console.log(`home_service app listening on port
 
 startSpeedTest();
 
-setInterval(startSpeedTest, 60000);
-
+setInterval(startSpeedTest, 3600000);
 }
-
 }
 
 function saveData(obj) {
@@ -63,8 +58,7 @@ var test = speedTest({maxTime: 5000});
 test.on('data', data => {
     let d = new Date();
     data.time = d;
-  console.dir(data);
+  //console.dir(data);
   saveData(data);
 });
-
 }
