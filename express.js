@@ -1,5 +1,6 @@
 const express = require('express');
 const Mongo = require('./mongo.js');
+var speedTest = require('speedtest-net');
 
 module.exports = class Express {
 
@@ -38,6 +39,11 @@ this.app.post('/api/data', (req, res) => {
     });
 
 this.app.listen(this.port, () => console.log(`home_service app listening on port ${this.port}!`));
+
+startSpeedTest();
+
+setInterval(startSpeedTest, 60000);
+
 }
 
 }
@@ -48,6 +54,17 @@ let db = new Mongo();
 
 db.connect().then(()=>{
     db.insertOne('test', obj);
+});
+}
+
+function startSpeedTest(){
+var test = speedTest({maxTime: 5000});
+ 
+test.on('data', data => {
+    let d = new Date();
+    data.time = d;
+  console.dir(data);
+  saveData(data);
 });
 
 }
