@@ -20,6 +20,7 @@
     "express": "^4.17.1",
     "ibm-watson": "^4.4.0",
     "mongodb": "^3.2.7",
+    "nodemailer": "^6.3.1",
     "speedtest-net": "^1.6.0"
   }
 }

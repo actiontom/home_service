@@ -29,5 +29,29 @@ async insertOne(collection, data) {
        });
 }
 
+async findDateRange(collection, beginDate, endDate) {
+  var myPromise = async () => {
+    return new Promise((resolve, reject) => {      
+     
+       this.db.collection('speedTest').find({
+        time: {
+          $gte: new Date(beginDate),
+          $lte: new Date(endDate)
+      }
+       })       
+       .toArray(function(err, data) {
+          err 
+             ? reject(err) 
+             : resolve(data);
+        });
+    });
+ };
+//await myPromise
+var result = await myPromise();
+
+return result;
+  
+}
+
 }
 

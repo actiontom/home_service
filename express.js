@@ -1,6 +1,7 @@
 const express = require('express');
 const Mongo = require('./mongo.js');
 var speedTest = require('speedtest-net');
+var nodemailer = require('nodemailer');
 
 module.exports = class Express {
 
@@ -22,43 +23,119 @@ this.app.use(express.json());
 
 this.app.get('/api/greet', (req, res) => {
     var name = req.query.name ? req.query.name : '';
-    saveData(req.query);
+    saveData('greet',req.query);
     res.send('Hello ' + name);
+});
+
+this.app.get('/api/speedHistory', async (req, res) => {
+    
+    var beginDate = req.query.beginDate ? req.query.beginDate : '';
+    var endDate = req.query.endDate ? req.query.endDate : '';
+    
+    let db = new Mongo();
+
+    await db.connect();
+    let data = await db.findDateRange('speedTest', beginDate, endDate); 
+    res.send(data);
 });
 
 this.app.get('/api/name', (req, res) => res.send('Thomas'));
 
 this.app.post('/api/data', (req, res) => {
-
-    saveData(req.body);
+    saveData('data',req.body);
     res.send(req.body);
-
     });
 
 this.app.listen(this.port, () => console.log(`home_service app listening on port ${this.port}!`));
 
 startSpeedTest();
-
 setInterval(startSpeedTest, 3600000);
+
+getReport();
+setInterval(getReport, 86400000);
+
 }
 }
 
-function saveData(obj) {
+function saveData(table, obj) {
+
+    let db = new Mongo();
     
-let db = new Mongo();
-
-db.connect().then(()=>{
-    db.insertOne('test', obj);
-});
+    db.connect().then(()=>{
+        db.insertOne(table, obj);
+    });
 }
+
 
 function startSpeedTest(){
-var test = speedTest({maxTime: 5000});
- 
-test.on('data', data => {
-    let d = new Date();
-    data.time = d;
-  //console.dir(data);
-  saveData(data);
-});
+
+    var test = speedTest({maxTime: 5000});
+
+    test.on('data', data => {
+        let d = new Date();
+        data.time = d;
+        //console.dir(data);
+        saveData('speedTest',data);
+    });
+
+    test.on('error', err => {
+        //console.error(err);
+        saveData('speedTestError', err);
+    });
 }
+
+function sendMail(obj){
+
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'actiontom.riley@gmail.com',
+      pass: 'Genesis1978'
+    }
+  });
+  
+  var mailOptions = {
+    from: 'actiontom.riley@gmail.com',
+    to: 'actiontom.riley@gmail.com, desiree@gaap.co.za',
+    subject: 'Home Service Speed Test Report',
+    text: obj
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+
+}
+
+async function getReport(){
+    let db = new Mongo();
+
+    await db.connect();
+
+    let date = new Date();
+    console.log(date);
+    
+    let beginDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate() + 'T' + '00' + ':' + '00' + ':00.000+00:00' ;
+    let endDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate() + 'T' + '23' + ':' + '59' + ':00.000+00:00' ;
+
+    let reportData = []; 
+    let data = await db.findDateRange('speedTest', beginDate, endDate); 
+
+    data.forEach(element => {
+        let obj = {
+            time: element.time,
+            id: element._id,
+            uploadSpeed: element.speeds.upload,
+            downloadSpeed: element.speeds.download
+        };
+        reportData.push(obj);        
+    });
+
+    sendMail(JSON.stringify(reportData));
+}
+
