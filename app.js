@@ -5,14 +5,14 @@ let server = new Express();
 server.start();
 
 
-const AssistantV1 = require('ibm-watson/assistant/v1');
+// const AssistantV1 = require('ibm-watson/assistant/v1');
 
-const assistant = new AssistantV1({
-  version: '2019-02-28',
-  iam_apikey: 'DJQrlgxu5HZQA5-QqXjVEYpEcnvbFuW-kD-Sr0K5ob6g',
-  url: 'https://gateway-lon.watsonplatform.net/assistant/api',
-  // disable_ssl_verification: true,
-});
+// const assistant = new AssistantV1({
+//   version: '2019-02-28',
+//   iam_apikey: 'DJQrlgxu5HZQA5-QqXjVEYpEcnvbFuW-kD-Sr0K5ob6g',
+//   url: 'https://gateway-lon.watsonplatform.net/assistant/api',
+//   // disable_ssl_verification: true,
+// });
 
 // assistant.listWorkspaces()
 //   .then(res => {
