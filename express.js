@@ -30,13 +30,10 @@ this.app.get('/api/greet', (req, res) => {
 this.app.get('/api/speedHistory', async (req, res) => {
     
     var beginDate = req.query.beginDate ? req.query.beginDate : '';
-    var endDate = req.query.endDate ? req.query.endDate : '';
-    
-    let db = new Mongo();
+    var endDate = req.query.endDate ? req.query.endDate : '';    
+    let reportDate = await getReport(beginDate, endDate);
 
-    await db.connect();
-    let data = await db.findDateRange('speedTest', beginDate, endDate); 
-    res.send(data);
+    res.send(reportDate);
 });
 
 this.app.get('/api/name', (req, res) => res.send('Thomas'));
@@ -51,11 +48,22 @@ this.app.listen(this.port, () => console.log(`home_service app listening on port
 startSpeedTest();
 setInterval(startSpeedTest, 3600000);
 
-getReport();
-setInterval(getReport, 86400000);
+setInterval(async()=>{
+  let reportDate = await getReport(); 
+  let dateTimeNow = new Date();
+  let currentHour = dateTimeNow.getHours();
+  let currentMinute = dateTimeNow.getMinutes(); 
+  
+  if (currentHour === 7 && currentMinute === 0 ||currentHour === 13 && currentMinute === 0 || currentHour === 23 && currentMinute === 59){
+
+      sendMail(JSON.stringify(reportDate));
+    }  
+  }, 60000);
 
 }
 }
+
+
 
 function saveData(table, obj) {
 
@@ -96,7 +104,7 @@ var transporter = nodemailer.createTransport({
   });
   
   var mailOptions = {
-    from: 'actiontom.riley@gmail.com',
+    from: 'actiontom.riley@gmail.com',    
     to: 'actiontom.riley@gmail.com, desiree@gaap.co.za',
     subject: 'Home Service Speed Test Report',
     text: obj
@@ -112,16 +120,23 @@ var transporter = nodemailer.createTransport({
 
 }
 
-async function getReport(){
+async function getReport(fromDate = null, toDate = null){
+
+  let beginDate = Date();
+  let endDate = Date();
+  let date = new Date();  
+
+  if (fromDate === null || toDate === null || fromDate === "" || toDate === ""){
+    beginDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate() + 'T' + '00' + ':' + '00' + ':00.000+00:00' ;
+    endDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate() + 'T' + '23' + ':' + '59' + ':00.000+00:00' ;
+  }
+  else {
+    beginDate = fromDate;
+    endDate = toDate;
+  }
     let db = new Mongo();
 
-    await db.connect();
-
-    let date = new Date();
-    console.log(date);
-    
-    let beginDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate() + 'T' + '00' + ':' + '00' + ':00.000+00:00' ;
-    let endDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate() + 'T' + '23' + ':' + '59' + ':00.000+00:00' ;
+    await db.connect();     
 
     let reportData = []; 
     let data = await db.findDateRange('speedTest', beginDate, endDate); 
@@ -136,6 +151,7 @@ async function getReport(){
         reportData.push(obj);        
     });
 
-    sendMail(JSON.stringify(reportData));
+    return reportData;
+   
 }
 
