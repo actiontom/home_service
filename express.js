@@ -49,14 +49,13 @@ startSpeedTest();
 setInterval(startSpeedTest, 3600000);
 
 setInterval(async()=>{
-  let reportDate = await getReport(); 
-  let dateTimeNow = new Date();
-  let currentHour = dateTimeNow.getHours();
-  let currentMinute = dateTimeNow.getMinutes(); 
+    let dateTimeNow = new Date();
+    let currentHour = dateTimeNow.getHours();
+    let currentMinute = dateTimeNow.getMinutes(); 
   
   if (currentHour === 7 && currentMinute === 0 ||currentHour === 13 && currentMinute === 0 || currentHour === 23 && currentMinute === 59){
-
-      sendMail(JSON.stringify(reportDate));
+    let reportData = await getReport();    
+        sendMail(JSON.stringify(reportData));
     }  
   }, 60000);
 
