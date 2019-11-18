@@ -62,8 +62,6 @@ setInterval(async()=>{
 }
 }
 
-
-
 function saveData(table, obj) {
 
     let db = new Mongo();
