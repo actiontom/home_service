@@ -51,12 +51,13 @@ setInterval(startSpeedTest, 3600000);
 setInterval(async()=>{
     let dateTimeNow = new Date();
     let currentHour = dateTimeNow.getHours();
-    let currentMinute = dateTimeNow.getMinutes(); 
+    let currentMinute = dateTimeNow.getMinutes();    
   
-  if (currentHour === 7 && currentMinute === 0 ||currentHour === 13 && currentMinute === 0 || currentHour === 23 && currentMinute === 59){
+  if (currentHour === 4 && currentMinute === 0 || currentHour === 13 && currentMinute === 0 || currentHour === 23 && currentMinute === 59){
+    
     let reportData = await getReport();    
         sendMail(JSON.stringify(reportData));
-    }  
+    }
   }, 60000);
 
 }
@@ -93,11 +94,13 @@ function sendMail(obj){
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'actiontom.riley@gmail.com',
-      pass: 'Genesis1978'
-    }
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // upgrade later with STARTTLS
+  auth: {
+    user: "actiontom.riley@gmail.com",
+    pass: "Genesis1978"
+  }
   });
   
   var mailOptions = {
