@@ -10,10 +10,33 @@ paths:
     get:
       summary: Returns a greeting with a name supplied.
       parameters:
-        - name: name
-          in: query
+        - in: query
+          name: name
           description: The name of a person.
           required: true
+          schema:
+            type: string
+      responses:
+        '200':    # status code
+          description: A greeting string containing the person who greeted.
+          content:
+            application/json:
+              schema:
+                type: string
+  /speedHistory:
+    get:
+      summary: Returns a collection of internet line speed tests over a period of time.
+      parameters:
+        - in: query
+          name: beginDate
+          description: The date from which the query should run.
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: endDate
+          description: The date to which the query should run.
+          required: false
           schema:
             type: string
       responses:
@@ -22,13 +45,23 @@ paths:
           content:
             application/json:
               schema:
-                type: string             
+                $ref: '#/components/schemas/SpeedHistoryResult'
+
 components:
   schemas:
-    Name:
-      type: string
+    SpeedHistoryResult:
+      type: object
       properties:
         id:
-          type: integer
-        name:
           type: string
+          description: blah
+        time:
+          type: string
+          description: Recorded time of the speed test.
+        uploadSpeed:
+          type: number    
+          description: Upload speed test result
+        downloadSpeed:
+          type: number    
+          description: Upload speed test result
+    

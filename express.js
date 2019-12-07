@@ -55,25 +55,15 @@ this.app.get('/greet', (req, res) => {
     res.send('Hello ' + name);
 });
 
-// this.app.get('/api/speedHistory', async (req, res) => {
+this.app.get('/speedHistory', async (req, res) => {
     
-//     var beginDate = req.query.beginDate ? req.query.beginDate : '';
-//     var endDate = req.query.endDate ? req.query.endDate : '';    
-//     let reportDate = await getReport(beginDate, endDate);
+    let beginDate = req.query.beginDate ? req.query.beginDate : '';
+    let endDate = req.query.endDate ? req.query.endDate : '';
+    let reportDate = await getReport(beginDate, endDate);
 
-//     res.send(reportDate);
-// });
+    res.send(reportDate);
+});
 
-// this.app.get('/api/name', (req, res) => res.send('Thomas'));
-
-// this.app.post('/api/data', (req, res) => {
-    
-//     saveData('data',req.body);
-
-//     res.send(req.body);
-//     });
-
-// this.app.listen(this.port, this.url,() => console.log(`home_service app listening on port ${this.port}!`));
 
 var server = http.createServer(this.app);
 server.listen(this.port);
