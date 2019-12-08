@@ -8,8 +8,13 @@ var http = require('http');
 var OpenApiValidator = require('express-openapi-validator').OpenApiValidator;
 
 const Mongo = require('./mongo.js');
-var speedTest = require('speedtest-net');
+//var speedTest = require('speedtest-net');
 var nodemailer = require('nodemailer');
+
+// Handlers
+const { greeting } = require('./handlers/greet');
+const { speedReport } = require('./handlers/speedReport');
+const { speedTest } = require('./handlers/speedTest');
 
 module.exports = class Express {
 
@@ -49,19 +54,20 @@ start(){
 
 this.app.get('/greet', (req, res) => {
 
-    var name = req.query.name ? req.query.name : '';
-    saveData('greet',req.query);
-
-    res.send('Hello ' + name);
+    let reponse = greeting(req);
+    res.send(reponse);
 });
 
 this.app.get('/speedHistory', async (req, res) => {
     
-    let beginDate = req.query.beginDate ? req.query.beginDate : '';
-    let endDate = req.query.endDate ? req.query.endDate : '';
-    let reportDate = await getReport(beginDate, endDate);
+    let response = await speedReport(req);
+    res.send(response);
+});
 
-    res.send(reportDate);
+this.app.get('/speedTest', async (req, res) => {
+    
+  let response = await speedTest();
+  res.send(response);
 });
 
 
@@ -90,34 +96,34 @@ setInterval(startSpeedTest, 3600000);
 }
 
 // Helper functions.
-function saveData(table, obj) {
+// function saveData(table, obj) {
 
-    let db = new Mongo();
+//     let db = new Mongo();
     
-    db.connect().then(()=>{
-        db.insertOne(table, obj);
-    });
-}
+//     db.connect().then(()=>{
+//         db.insertOne(table, obj);
+//     });
+// }
 
-function startSpeedTest(){
+// function startSpeedTest(){
 
-    var test = speedTest({maxTime: 5000});
+//     var test = speedTest({maxTime: 5000});
 
-    test.on('data', data => {
-        let d = new Date();
-        data.time = d;       
-        saveData('speedTest',data);
-    });
+//     test.on('data', data => {
+//         let d = new Date();
+//         data.time = d;       
+//         saveData('speedTest',data);
+//     });
 
-    test.on('error', err => {        
-        saveData('speedTestError', err);
-    });
-}
+//     test.on('error', err => {        
+//         saveData('speedTestError', err);
+//     });
+// }
 
 function sendMail(obj){
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-var transporter = nodemailer.createTransport({
+  var transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
   secure: false, // upgrade later with STARTTLS
@@ -143,39 +149,3 @@ var transporter = nodemailer.createTransport({
   });
 
 }
-
-async function getReport(fromDate = null, toDate = null){
-
-  let beginDate = Date();
-  let endDate = Date();
-  let date = new Date();  
-
-  if (fromDate === null || toDate === null || fromDate === "" || toDate === ""){
-    beginDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate() + 'T' + '00' + ':' + '00' + ':00.000+00:00' ;
-    endDate = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate() + 'T' + '23' + ':' + '59' + ':00.000+00:00' ;
-  }
-  else {
-    beginDate = fromDate;
-    endDate = toDate;
-  }
-    let db = new Mongo();
-
-    await db.connect();     
-
-    let reportData = []; 
-    let data = await db.findDateRange('speedTest', beginDate, endDate); 
-
-    data.forEach(element => {
-        let obj = {
-            time: element.time,
-            id: element._id,
-            uploadSpeed: element.speeds.upload,
-            downloadSpeed: element.speeds.download
-        };
-        reportData.push(obj);        
-    });
-
-    return reportData;
-   
-}
-
