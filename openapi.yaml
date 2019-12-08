@@ -45,7 +45,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SpeedHistoryResult'
+                $ref: '#/components/schemas/SpeedHistoryResults'
   /speedTest:
     get:
       summary: Returns thecurrent internet line speed test.
@@ -55,12 +55,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SpeedHistoryResult'
+                $ref: '#/components/schemas/SpeedHistoryResults'
 
 components:
   schemas:
-    SpeedHistoryResult:
-      type: object
+    SpeedHistoryResults:
+      type: array
       properties:
         id:
           type: string
@@ -70,8 +70,8 @@ components:
           description: Recorded time of the speed test.
         uploadSpeed:
           type: number    
-          description: Upload speed test result
+          description: Upload speed test result.
         downloadSpeed:
           type: number    
-          description: Upload speed test result
+          description: Download speed test result.
     

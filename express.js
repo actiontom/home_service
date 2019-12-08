@@ -6,9 +6,6 @@ var logger = require('morgan');
 var http = require('http');
 
 var OpenApiValidator = require('express-openapi-validator').OpenApiValidator;
-
-const Mongo = require('./mongo.js');
-//var speedTest = require('speedtest-net');
 var nodemailer = require('nodemailer');
 
 // Handlers
@@ -75,11 +72,6 @@ var server = http.createServer(this.app);
 server.listen(this.port);
 console.group('Listening on port ' + this.port);
 
-/*
-startSpeedTest();
-setInterval(startSpeedTest, 3600000);
-*/
-
 // setInterval(async()=>{
 //     let dateTimeNow = new Date();
 //     let currentHour = dateTimeNow.getHours();
@@ -95,57 +87,32 @@ setInterval(startSpeedTest, 3600000);
   }
 }
 
-// Helper functions.
-// function saveData(table, obj) {
+// function sendMail(obj){
 
-//     let db = new Mongo();
-    
-//     db.connect().then(()=>{
-//         db.insertOne(table, obj);
-//     });
-// }
-
-// function startSpeedTest(){
-
-//     var test = speedTest({maxTime: 5000});
-
-//     test.on('data', data => {
-//         let d = new Date();
-//         data.time = d;       
-//         saveData('speedTest',data);
-//     });
-
-//     test.on('error', err => {        
-//         saveData('speedTestError', err);
-//     });
-// }
-
-function sendMail(obj){
-
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-  var transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // upgrade later with STARTTLS
-  auth: {
-    user: "actiontom.riley@gmail.com",
-    pass: "Genesis1978"
-  }
-  });
+//     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+//   var transporter = nodemailer.createTransport({
+//   host: "smtp.gmail.com",
+//   port: 587,
+//   secure: false, // upgrade later with STARTTLS
+//   auth: {
+//     user: "actiontom.riley@gmail.com",
+//     pass: "Genesis1978"
+//   }
+//   });
   
-  var mailOptions = {
-    from: 'actiontom.riley@gmail.com',    
-    to: 'actiontom.riley@gmail.com, desiree@gaap.co.za',
-    subject: 'Home Service Speed Test Report',
-    text: obj
-  };
+//   var mailOptions = {
+//     from: 'actiontom.riley@gmail.com',    
+//     to: 'actiontom.riley@gmail.com, desiree@gaap.co.za',
+//     subject: 'Home Service Speed Test Report',
+//     text: obj
+//   };
   
-  transporter.sendMail(mailOptions, function(error, info){
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
+//   transporter.sendMail(mailOptions, function(error, info){
+//     if (error) {
+//       console.log(error);
+//     } else {
+//       console.log('Email sent: ' + info.response);
+//     }
+//   });
 
-}
+// }
