@@ -19,7 +19,7 @@ constructor(){
 
 this.app = express();
 this.port =  3000;
-//this.url = '0.0.0.0'; //Current PI URL
+this.url = '0.0.0.0'; //Current PI URL
 
 this.app.use(bodyParser.json());
 this.app.use(logger('dev'));
