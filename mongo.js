@@ -11,13 +11,12 @@ async connect(conn, onSuccess, onFailure){
     var connection = await MongoClient.connect(this.url, { useNewUrlParser: true });
     this.db = connection.db('mydb');
     console.log('MongoClient Connection successfull.');
-    // onSuccess()
     return connection;
   }
   catch(ex) {
-    // logger.error("Error caught,", ex)
+    
     console.log('MongoClient connection failed: ' + ex)
-    //onFailure(ex)
+    
   }
 }
 
@@ -46,6 +45,7 @@ async findDateRange(collection, beginDate, endDate) {
         });
     });
  };
+
 //await myPromise
 var result = await myPromise();
 
