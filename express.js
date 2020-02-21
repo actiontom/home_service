@@ -63,7 +63,7 @@ this.app.get('/speedHistory', async (req, res) => {
 
 this.app.get('/speedTest', async (req, res) => {
     
-  let response = await speedTest();
+  let response = await speedTest(req);
   res.send(response);
 });
 

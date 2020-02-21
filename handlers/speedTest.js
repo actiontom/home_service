@@ -3,15 +3,26 @@ var speedTest = require('speedtest-net');
 
 module.exports = {
 
-    async speedTest(){
+    async speedTest(req){
 
-        let currentSpeeds = await startSpeedTest();
+        let type = null;
+
+        if(req && req.query && req.query.type){
+
+            type = req.query.type;
+        }
+        else{
+
+            type = 'automated';
+        }
+
+        let currentSpeeds = await startSpeedTest(type);
         
         return currentSpeeds;
         }    
 }
 
-async function startSpeedTest(){
+async function startSpeedTest(type){
 
     var myPromise = async () => {
 
@@ -21,7 +32,8 @@ async function startSpeedTest(){
             test.on('data', data => {
                 let d = new Date();
                     data.time = d;
-                    saveData('speedTest', data)      
+                    data.type = type;                    
+                    saveData('speedTest', data)
                     resolve(data);
             });
             test.on('error', err => {

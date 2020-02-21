@@ -39,7 +39,8 @@ async function getReport(fromDate = null, toDate = null){
               time: element.time,
               id: element._id,
               uploadSpeed: element.speeds.upload,
-              downloadSpeed: element.speeds.download
+              downloadSpeed: element.speeds.download,
+              type: element.type
           };
           reportData.push(obj);        
       });

@@ -2,7 +2,6 @@
 
 const Express = require('./express');
 const Mongo = require('./mongo');
-
 const { speedTest } = require('./handlers/speedTest');
 
 let server = new Express();
