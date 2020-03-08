@@ -12,6 +12,8 @@ var nodemailer = require('nodemailer');
 const { greeting } = require('./handlers/greet');
 const { speedReport } = require('./handlers/speedReport');
 const { speedTest } = require('./handlers/speedTest');
+const { currentWeather } = require('./handlers/currentWeather');
+const { searchCity } = require('./handlers/searchCity');
 
 module.exports = class Express {
 
@@ -67,22 +69,21 @@ this.app.get('/speedTest', async (req, res) => {
   res.send(response);
 });
 
+this.app.get('/currentWeather', async (req, res) => {
+    
+  let response = await currentWeather(req);
+  res.send(response);
+});
+
+this.app.get('/searchCity', async (req, res) => {
+    
+  let response = await searchCity(req);
+  res.send(response);
+});
 
 var server = http.createServer(this.app);
 server.listen(this.port);
 console.group('Listening on port ' + this.port);
-
-// setInterval(async()=>{
-//     let dateTimeNow = new Date();
-//     let currentHour = dateTimeNow.getHours();
-//     let currentMinute = dateTimeNow.getMinutes();    
-  
-//   if (currentHour === 4 && currentMinute === 0 || currentHour === 13 && currentMinute === 0 || currentHour === 23 && currentMinute === 59){
-    
-//     let reportData = await getReport();    
-//         sendMail(JSON.stringify(reportData));
-//     }
-//   }, 60000);
 
   }
 }

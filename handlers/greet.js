@@ -10,6 +10,5 @@ module.exports = {
         db.insertOne('greet', req.query);
         });
         return ('Hi there ' + name);
-        }
-    
+        }    
 }
