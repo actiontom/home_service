@@ -103,8 +103,31 @@ paths:
               schema:
                  type: string
 
+  /covid19Summary:
+    get:
+      summary: Returns the covid19 statuses of all countries.      
+      responses:
+        '200':    # status code
+          description: A JSON array objects containing the latest covid19 details.
+          content:
+            application/json:
+              schema:
+                 type: string
+
 components:
   schemas:
+    Covid19Summary:
+      type: array
+      properties:
+        Country:
+          type: string
+          description: country name
+        Slug:
+          type: string
+          description: web name
+        NewConfirmed:
+          type: string
+          description: new confirmed cases in the last 24 hours
     SpeedHistoryResults:
       type: array
       properties:

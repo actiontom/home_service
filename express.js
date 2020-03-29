@@ -14,6 +14,7 @@ const { speedReport } = require('./handlers/speedReport');
 const { speedTest } = require('./handlers/speedTest');
 const { currentWeather } = require('./handlers/currentWeather');
 const { searchCity } = require('./handlers/searchCity');
+const { covid19Summary } = require('./handlers/covid19Summary');
 
 module.exports = class Express {
 
@@ -78,6 +79,12 @@ this.app.get('/currentWeather', async (req, res) => {
 this.app.get('/searchCity', async (req, res) => {
     
   let response = await searchCity(req);
+  res.send(response);
+});
+
+this.app.get('/covid19Summary', async (req, res) => {
+    
+  let response = await covid19Summary(req);
   res.send(response);
 });
 

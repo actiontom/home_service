@@ -1,45 +1,26 @@
 "use strict";
 
-class AccuWeather {
+class Covid19 {
 
     constructor() {
 
-        this.baseUrl = 'http://dataservice.accuweather.com';
-        this.apiKey = 'mAZBdCbnmtWHWk0WjCRTKGoNo91mptem';
+        this.baseUrl = 'https://api.covid19api.com';        
     }    
 
-    async getCurrentConditions(locationKey) {
+    async getCovid19Summary() {
 
         const options = {
             hostname: this.baseUrl ,
             port: 443,
-            path: '/currentconditions/v1/' + locationKey + '?apikey=' + this.apiKey ,
+            path: '/summary',
             method: 'GET'
             }
 
             let response = await getContent(this.baseUrl + options.path);
             return response;                  
-    }
-
-    async searchCity(cityText) {
-
-        const options = {
-            hostname: this.baseUrl ,
-            port: 443,
-            path: '/locations/v1/cities/search' + '?apikey=' + this.apiKey + '&q=' + cityText ,
-            method: 'GET'
-            }
-            let response = null;
-            try{
-
-               response = await getContent(this.baseUrl + options.path);
-            }catch(error){
-                console.log(error);
-            }
-            return response;
-    }
+    }   
 }
-module.exports = AccuWeather;
+module.exports = Covid19;
 
 function getContent (url) {
 
