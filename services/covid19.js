@@ -18,7 +18,34 @@ class Covid19 {
 
             let response = await getContent(this.baseUrl + options.path);
             return response;                  
-    }   
+    }
+
+    async getCovid19Countries() {
+
+      const options = {
+          hostname: this.baseUrl ,
+          port: 443,
+          path: '/countries',
+          method: 'GET'
+          }
+
+          let response = await getContent(this.baseUrl + options.path);
+          return response;                  
+  }
+    
+    async getCovid19DayOne() {
+
+      const options = {
+        hostname: this.baseUrl ,
+        port: 443,
+        path: '/dayone',
+        method: 'GET'
+        }
+
+        let response = await getContent(this.baseUrl + options.path);
+        return response;
+
+    }
 }
 module.exports = Covid19;
 

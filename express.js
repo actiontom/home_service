@@ -15,6 +15,7 @@ const { speedTest } = require('./handlers/speedTest');
 const { currentWeather } = require('./handlers/currentWeather');
 const { searchCity } = require('./handlers/searchCity');
 const { covid19Summary } = require('./handlers/covid19Summary');
+const { covid19Countries } = require('./handlers/covid19Countries');
 
 module.exports = class Express {
 
@@ -88,6 +89,12 @@ this.app.get('/covid19Summary', async (req, res) => {
   res.send(response);
 });
 
+this.app.get('/covid19Countries', async (req, res) => {
+    
+  let response = await covid19Countries(req);
+  res.send(response);
+});
+
 var server = http.createServer(this.app);
 server.listen(this.port);
 console.group('Listening on port ' + this.port);
@@ -104,7 +111,7 @@ console.group('Listening on port ' + this.port);
 //   secure: false, // upgrade later with STARTTLS
 //   auth: {
 //     user: "actiontom.riley@gmail.com",
-//     pass: "Genesis1978"
+//     pass: "*******"
 //   }
 //   });
   

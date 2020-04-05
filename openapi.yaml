@@ -114,6 +114,28 @@ paths:
               schema:
                  type: string
 
+  /covid19Countries:
+    get:
+      summary: Returns all the county names and slugs that is giving Covid19 information.      
+      responses:
+        '200':    # status code
+          description: A JSON array objects containing the latest covid19 country names.
+          content:
+            application/json:
+              schema:
+                 type: string
+  
+  /covid19DayOne:
+    get:
+      summary: Returns the covid19 statuses of all countries.      
+      responses:
+        '200':    # status code
+          description: A JSON array objects containing the latest covid19 details.
+          content:
+            application/json:
+              schema:
+                 type: string
+
 components:
   schemas:
     Covid19Summary:
