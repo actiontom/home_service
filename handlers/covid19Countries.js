@@ -3,8 +3,7 @@ const Covid19 = require('../services/covid19')
 
 module.exports = {
 
-    async covid19Countries(req){
-       
+    async covid19Countries(req){       
 
         let covid = new Covid19();
 

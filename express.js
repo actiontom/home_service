@@ -6,7 +6,7 @@ var logger = require('morgan');
 var http = require('http');
 
 var OpenApiValidator = require('express-openapi-validator').OpenApiValidator;
-var nodemailer = require('nodemailer');
+// var nodemailer = require('nodemailer');
 
 // Handlers
 const { greeting } = require('./handlers/greet');
@@ -16,6 +16,7 @@ const { currentWeather } = require('./handlers/currentWeather');
 const { searchCity } = require('./handlers/searchCity');
 const { covid19Summary } = require('./handlers/covid19Summary');
 const { covid19Countries } = require('./handlers/covid19Countries');
+const { covid19DayOne } = require('./handlers/covid19DayOne');
 
 module.exports = class Express {
 
@@ -92,6 +93,12 @@ this.app.get('/covid19Summary', async (req, res) => {
 this.app.get('/covid19Countries', async (req, res) => {
     
   let response = await covid19Countries(req);
+  res.send(response);
+});
+
+this.app.get('/covid19DayOne', async (req, res) => { 
+
+  let response = await covid19DayOne(req);
   res.send(response);
 });
 

@@ -35,15 +35,19 @@ class Covid19 {
     
     async getCovid19DayOne(country, status) {
 
-      let strCountry = 'south-africa';
-      let strStatus = 'confirmed';
+      let strCountry = country;
+      let strStatus = status;
 
       const options = {
-        hostname: this.baseUrl ,
+        hostname: this.baseUrl,
         port: 443,
-        path: '/dayone/' + strCountry + '/status/' + strStatus,
+        path: '/dayone/country/' + strCountry + '/status/' + strStatus,
         method: 'GET'
         }
+
+          // 'https://api.covid19api.com/dayone/country/south-africa/status/confirmed'
+
+          console.log(this.baseUrl + options.path);
 
         let response = await getContent(this.baseUrl + options.path);
         return response;

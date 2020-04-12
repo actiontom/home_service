@@ -127,7 +127,7 @@ paths:
   
   /covid19DayOne:
     get:
-      summary: Returns the covid19 statuses of all countries.      
+      summary: Returns the covid19 stats since day one.      
       responses:
         '200':    # status code
           description: A JSON array objects containing the latest covid19 details.
