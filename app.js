@@ -7,5 +7,5 @@ const { speedTest } = require('./handlers/speedTest');
 let server = new Express();
 server.start();
 
-speedTest();
-setInterval(speedTest, 3600000);
+// speedTest();
+// setInterval(speedTest, 3600000);
