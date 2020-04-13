@@ -41,7 +41,7 @@ class Covid19 {
       const options = {
         hostname: this.baseUrl,
         port: 443,
-        path: '/dayone/country/' + strCountry + '/status/' + strStatus,
+        path: '/total/dayone/country/' + strCountry + '/status/' + strStatus,
         method: 'GET'
         }
 
