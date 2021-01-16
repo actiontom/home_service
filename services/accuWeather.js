@@ -15,7 +15,7 @@ class AccuWeather {
         const options = {
             hostname: this.baseUrl ,
             port: 443,
-            path: '/currentconditions/v1/' + locationKey + '?apikey=' + this.apiKey ,
+            path: '/currentconditions/v1/' + locationKey + '?apikey=' + this.apiKey,
             method: 'GET'
             }
 
