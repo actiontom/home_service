@@ -7,6 +7,30 @@ servers:
   - url: http://0.0.0.0:3000/
 paths:
 
+  /login:
+    get:
+      summary: Requests a login with a usernme and password.
+      parameters:
+        - in: query
+          name: userName
+          description: The username of a person.
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: password
+          description: The password of a person.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':    # status code
+          description: A greeting object describing the logged in user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
   /greet:
     get:
       summary: Returns a greeting with a name supplied.
@@ -138,6 +162,21 @@ paths:
 
 components:
   schemas:
+    User:
+      type: object
+      properties:
+        FirstName:
+          type: string
+          description: First name of the logged in User.
+        LastName:
+          type: string
+          description: Last name of the logged in User.
+        email:
+          type: string
+          description: The email of the logged in User.
+        Role:
+          type: string
+          description: The security role of the logged in User.
     Covid19Summary:
       type: array
       properties:

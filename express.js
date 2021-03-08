@@ -9,6 +9,7 @@ var OpenApiValidator = require('express-openapi-validator').OpenApiValidator;
 // var nodemailer = require('nodemailer');
 
 // Handlers
+const { login } = require('./handlers/login');
 const { greeting } = require('./handlers/greet');
 const { speedReport } = require('./handlers/speedReport');
 const { speedTest } = require('./handlers/speedTest');
@@ -53,6 +54,12 @@ start(){
       //   ApiKeyAuth: (req, scopes, schema) => true,
       // },
     }).install(this.app);
+
+this.app.get('/login', async (req, res) => {
+
+    let reponse = await login(req);
+    res.send(reponse);
+});
 
 this.app.get('/greet', (req, res) => {
 
