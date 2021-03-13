@@ -89,7 +89,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SpeedHistoryResults'
+                 type: array
+                 items:
+                  $ref: '#/components/schemas/SpeedHistoryResults'
 
   /currentWeather:
     get:
@@ -136,7 +138,9 @@ paths:
           content:
             application/json:
               schema:
-                 type: string
+                type: array
+                items:
+                 $ref: "#/components/schemas/Covid19Summary"
 
   /covid19Countries:
     get:
@@ -178,7 +182,7 @@ components:
           type: string
           description: The security role of the logged in User.
     Covid19Summary:
-      type: array
+      type: object
       properties:
         Country:
           type: string
@@ -190,7 +194,7 @@ components:
           type: string
           description: new confirmed cases in the last 24 hours
     SpeedHistoryResults:
-      type: array
+      type: object
       properties:
         id:
           type: string
